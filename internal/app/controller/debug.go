@@ -18,7 +18,7 @@ import (
 
 // Debug controller
 func Debug(c *gin.Context) {
-	route := model.GetRoute(c.FullPath())
+	route := model.GetRoute(c.FullPath(), "")
 
 	rand.Seed(time.Now().UnixNano())
 

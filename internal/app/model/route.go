@@ -5,12 +5,15 @@
 package model
 
 import (
+	"strings"
+
 	"github.com/spf13/viper"
 )
 
 // Route struct
 type Route struct {
 	Path     string `mapstructure:",path"`
+	Method   string `mapstructure:",method"`
 	Latency  string `mapstructure:",latency"`
 	FailRate string `mapstructure:",failRate"`
 }
@@ -42,7 +45,7 @@ func GetMockRoutes() ([]Route, error) {
 }
 
 // GetRoute get route object with path
-func GetRoute(path string) Route {
+func GetRoute(path string, method string) Route {
 	debugRoutes, _ := GetDebugRoutes()
 
 	for _, route := range debugRoutes {
@@ -54,7 +57,7 @@ func GetRoute(path string) Route {
 	mockRoutes, _ := GetMockRoutes()
 
 	for _, route := range mockRoutes {
-		if path == route.Path {
+		if path == route.Path && strings.ToLower(method) == strings.ToLower(route.Method) {
 			return route
 		}
 	}

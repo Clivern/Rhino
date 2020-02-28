@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/clivern/rhino/internal/app/controller"
 	"github.com/clivern/rhino/internal/app/model"
@@ -104,7 +105,21 @@ func main() {
 	}
 
 	for _, route := range mockRoutes {
-		r.Any(route.Path, controller.Mock)
+		if strings.ToLower(route.Method) == "get" {
+			r.GET(route.Path, controller.Mock)
+		} else if strings.ToLower(route.Method) == "post" {
+			r.POST(route.Path, controller.Mock)
+		} else if strings.ToLower(route.Method) == "put" {
+			r.PUT(route.Path, controller.Mock)
+		} else if strings.ToLower(route.Method) == "delete" {
+			r.DELETE(route.Path, controller.Mock)
+		} else if strings.ToLower(route.Method) == "patch" {
+			r.PATCH(route.Path, controller.Mock)
+		} else if strings.ToLower(route.Method) == "head" {
+			r.HEAD(route.Path, controller.Mock)
+		} else if strings.ToLower(route.Method) == "options" {
+			r.OPTIONS(route.Path, controller.Mock)
+		}
 	}
 
 	var runerr error
