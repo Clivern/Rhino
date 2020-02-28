@@ -13,6 +13,7 @@ import (
 	"strconv"
 
 	"github.com/clivern/rhino/internal/app/controller"
+	"github.com/clivern/rhino/internal/app/model"
 	"github.com/clivern/rhino/internal/app/util"
 
 	"github.com/gin-gonic/gin"
@@ -79,6 +80,32 @@ func main() {
 	})
 
 	r.GET("/_health", controller.Health)
+
+	debugRoutes, err := model.GetDebugRoutes()
+
+	if err != nil {
+		panic(fmt.Sprintf(
+			"Error while building debug routes from config file: %s",
+			err.Error(),
+		))
+	}
+
+	for _, route := range debugRoutes {
+		r.Any(route.Path, controller.Debug)
+	}
+
+	mockRoutes, err := model.GetMockRoutes()
+
+	if err != nil {
+		panic(fmt.Sprintf(
+			"Error while building mock routes from config file: %s",
+			err.Error(),
+		))
+	}
+
+	for _, route := range mockRoutes {
+		r.Any(route.Path, controller.Mock)
+	}
 
 	var runerr error
 

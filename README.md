@@ -27,7 +27,7 @@ Create the config file `config.prod.json`
 ```json
 {
     "app": {
-        "mode": "dev",
+        "mode": "prod",
         "port": "8080",
         "tls": {
             "status": "off",
@@ -35,11 +35,13 @@ Create the config file `config.prod.json`
             "keyPath": "/cert/server.key"
         }
     },
-    "mock": [
-
-    ],
+    "mock": [],
     "debug": [
-
+        {
+            "path": "/api/v2/service/debug",
+            "latency": "0s",
+            "failRate": "0%"
+        }
     ]
 }
 ```
