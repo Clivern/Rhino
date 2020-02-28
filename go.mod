@@ -1,6 +1,6 @@
 module github.com/clivern/rhino
 
-go 1.11
+go 1.12
 
 require (
 	github.com/gin-gonic/gin v1.5.0
