@@ -35,7 +35,20 @@ Create the config file `config.prod.json`
             "keyPath": "/cert/server.key"
         }
     },
-    "mock": [],
+    "mock": [
+        {
+            "path": "/api/v2/service/mock/:id",
+            "method": "get",
+            "latency": "0s",
+            "failRate": "0%"
+        },
+        {
+            "path": "/api/v2/service/mock/:id",
+            "method": "post",
+            "latency": "0s",
+            "failRate": "0%"
+        }
+    ],
     "debug": [
         {
             "path": "/api/v2/service/debug",
