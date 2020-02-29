@@ -65,8 +65,8 @@ Create the config file `config.prod.json`
     ],
     "log": {
         "level": "info",
-        "output": "stdout",
-        "format": "canonical"
+        "output": "stdout", //Path to /var/log/rhino.log
+        "format": "console"
     }
 }
 ```

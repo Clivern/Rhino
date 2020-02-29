@@ -39,6 +39,6 @@
     "log": {
         "level": "info",
         "output": "stdout",
-        "format": "canonical"
+        "format": "console"
     }
 }
