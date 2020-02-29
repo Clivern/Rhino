@@ -11,22 +11,34 @@
     "mock": [
         {
             "path": "/api/v2/service/mock/:id",
-            "method": "get",
-            "latency": "0s",
-            "failRate": "0%"
-        },
-        {
-            "path": "/api/v2/service/mock/:id",
-            "method": "post",
-            "latency": "0s",
-            "failRate": "0%"
+            "request": {
+                "method": "get"
+            },
+            "response": {
+                "statusCode": 200,
+                "headers": [
+                    {"key": "Content-Type", "value": "application/json"}
+                ],
+                "body": "{\"id\": \":id\"}"
+            },
+            "chaos": {
+                "latency": "0s",
+                "failRate": "0%"
+            }
         }
     ],
     "debug": [
         {
             "path": "/api/v2/service/debug",
-            "latency": "0s",
-            "failRate": "0%"
+            "chaos": {
+                "latency": "0s",
+                "failRate": "0%"
+            }
         }
-    ]
+    ],
+    "log": {
+        "level": "info",
+        "output": "stdout",
+        "format": "canonical"
+    }
 }

@@ -22,14 +22,14 @@ func Mock(c *gin.Context) {
 
 	rand.Seed(time.Now().UnixNano())
 
-	failCount, _ := strconv.Atoi(strings.ReplaceAll(route.FailRate, "%", ""))
+	failCount, _ := strconv.Atoi(strings.ReplaceAll(route.Chaos.FailRate, "%", ""))
 
 	if rand.Intn(100) < failCount {
 		c.Status(http.StatusInternalServerError)
 		return
 	}
 
-	latencySeconds, _ := strconv.Atoi(strings.ReplaceAll(route.Latency, "s", ""))
+	latencySeconds, _ := strconv.Atoi(strings.ReplaceAll(route.Chaos.Latency, "s", ""))
 
 	time.Sleep(time.Duration(latencySeconds) * time.Second)
 

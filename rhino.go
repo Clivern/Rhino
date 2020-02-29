@@ -105,19 +105,19 @@ func main() {
 	}
 
 	for _, route := range mockRoutes {
-		if strings.ToLower(route.Method) == "get" {
+		if strings.ToLower(route.Request.Method) == "get" {
 			r.GET(route.Path, controller.Mock)
-		} else if strings.ToLower(route.Method) == "post" {
+		} else if strings.ToLower(route.Request.Method) == "post" {
 			r.POST(route.Path, controller.Mock)
-		} else if strings.ToLower(route.Method) == "put" {
+		} else if strings.ToLower(route.Request.Method) == "put" {
 			r.PUT(route.Path, controller.Mock)
-		} else if strings.ToLower(route.Method) == "delete" {
+		} else if strings.ToLower(route.Request.Method) == "delete" {
 			r.DELETE(route.Path, controller.Mock)
-		} else if strings.ToLower(route.Method) == "patch" {
+		} else if strings.ToLower(route.Request.Method) == "patch" {
 			r.PATCH(route.Path, controller.Mock)
-		} else if strings.ToLower(route.Method) == "head" {
+		} else if strings.ToLower(route.Request.Method) == "head" {
 			r.HEAD(route.Path, controller.Mock)
-		} else if strings.ToLower(route.Method) == "options" {
+		} else if strings.ToLower(route.Request.Method) == "options" {
 			r.OPTIONS(route.Path, controller.Mock)
 		}
 	}

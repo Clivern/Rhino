@@ -12,10 +12,22 @@ import (
 
 // Route struct
 type Route struct {
-	Path     string `mapstructure:",path"`
-	Method   string `mapstructure:",method"`
-	Latency  string `mapstructure:",latency"`
-	FailRate string `mapstructure:",failRate"`
+	Path    string `mapstructure:"path"`
+	Request struct {
+		Method string `mapstructure:"method"`
+	} `mapstructure:"request"`
+	Response struct {
+		StatusCode int `mapstructure:"statusCode"`
+		Headers    []struct {
+			Key   string `mapstructure:"key"`
+			Value string `mapstructure:"value"`
+		} `mapstructure:"headers"`
+		Body string `mapstructure:"body"`
+	} `mapstructure:"response"`
+	Chaos struct {
+		Latency  string `mapstructure:"latency"`
+		FailRate string `mapstructure:"failRate"`
+	} `mapstructure:"chaos"`
 }
 
 // GetDebugRoutes get a list of debug routes
@@ -57,7 +69,7 @@ func GetRoute(path string, method string) Route {
 	mockRoutes, _ := GetMockRoutes()
 
 	for _, route := range mockRoutes {
-		if path == route.Path && strings.ToLower(method) == strings.ToLower(route.Method) {
+		if path == route.Path && strings.ToLower(method) == strings.ToLower(route.Request.Method) {
 			return route
 		}
 	}
