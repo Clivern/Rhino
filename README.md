@@ -27,7 +27,7 @@ Create the config file `config.prod.json`
 ```json
 {
     "app": {
-        "mode": "prod",
+        "mode": "prod or dev",
         "port": "8080",
         "tls": {
             "status": "off",
@@ -65,8 +65,8 @@ Create the config file `config.prod.json`
     ],
     "log": {
         "level": "info",
-        "output": "stdout", //Path to /var/log/rhino.log
-        "format": "console"
+        "output": "stdout or /var/log/rhino.log",
+        "format": "console or json"
     }
 }
 ```
