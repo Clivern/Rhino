@@ -29,6 +29,7 @@ Create the config file `config.prod.json`
     "app": {
         "mode": "prod or dev",
         "port": "8080",
+        "domain": "http://127.0.0.1:8080",
         "tls": {
             "status": "off",
             "pemPath": "/cert/server.pem",

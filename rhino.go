@@ -80,7 +80,9 @@ func main() {
 		c.String(http.StatusNoContent, "")
 	})
 
+	r.GET("/", controller.Index)
 	r.GET("/_health", controller.Health)
+	r.GET("/api/requests", controller.Requests)
 
 	debugRoutes, err := model.GetDebugRoutes()
 
