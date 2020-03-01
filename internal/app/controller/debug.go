@@ -31,6 +31,7 @@ func Debug(c *gin.Context) {
 	}
 
 	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+	header, _ := json.Marshal(c.Request.Header)
 
 	logger, _ := module.NewLogger()
 
@@ -40,18 +41,23 @@ func Debug(c *gin.Context) {
 
 	rand.Seed(time.Now().UnixNano())
 
-	failCount, _ := strconv.Atoi(strings.ReplaceAll(route.Chaos.FailRate, "%", ""))
+	failCount, _ := strconv.Atoi(strings.Replace(route.Chaos.FailRate, "%", "", -1))
 
 	if rand.Intn(100) < failCount {
+		logger.Info(fmt.Sprintf(
+			"FAILED %s:%s %s %s",
+			c.Request.Method,
+			c.Request.URL,
+			header,
+			string(bodyBytes),
+		))
 		c.Status(http.StatusInternalServerError)
 		return
 	}
 
-	latencySeconds, _ := strconv.Atoi(strings.ReplaceAll(route.Chaos.Latency, "s", ""))
+	latencySeconds, _ := strconv.Atoi(strings.Replace(route.Chaos.Latency, "s", "", -1))
 
 	time.Sleep(time.Duration(latencySeconds) * time.Second)
-
-	header, _ := json.Marshal(c.Request.Header)
 
 	logger.Info(fmt.Sprintf(
 		"%s:%s %s %s",

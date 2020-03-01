@@ -5,6 +5,10 @@
 package controller
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -12,28 +16,64 @@ import (
 	"time"
 
 	"github.com/clivern/rhino/internal/app/model"
+	"github.com/clivern/rhino/internal/app/module"
 
 	"github.com/gin-gonic/gin"
 )
 
 // Mock controller
 func Mock(c *gin.Context) {
+	var bodyBytes []byte
+
+	// Workaround for issue https://github.com/gin-gonic/gin/issues/1651
+	if c.Request.Body != nil {
+		bodyBytes, _ = ioutil.ReadAll(c.Request.Body)
+	}
+
+	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+	header, _ := json.Marshal(c.Request.Header)
+
+	logger, _ := module.NewLogger()
+
+	defer logger.Sync()
+
 	route := model.GetRoute(c.FullPath(), c.Request.Method)
 
 	rand.Seed(time.Now().UnixNano())
 
-	failCount, _ := strconv.Atoi(strings.ReplaceAll(route.Chaos.FailRate, "%", ""))
+	failCount, _ := strconv.Atoi(strings.Replace(route.Chaos.FailRate, "%", "", -1))
 
 	if rand.Intn(100) < failCount {
+		logger.Info(fmt.Sprintf(
+			"FAILED %s:%s %s %s",
+			c.Request.Method,
+			c.Request.URL,
+			header,
+			string(bodyBytes),
+		))
 		c.Status(http.StatusInternalServerError)
 		return
 	}
 
-	latencySeconds, _ := strconv.Atoi(strings.ReplaceAll(route.Chaos.Latency, "s", ""))
+	latencySeconds, _ := strconv.Atoi(strings.Replace(route.Chaos.Latency, "s", "", -1))
 
 	time.Sleep(time.Duration(latencySeconds) * time.Second)
 
-	c.JSON(http.StatusOK, gin.H{
-		"status": "ok",
-	})
+	logger.Info(fmt.Sprintf(
+		"%s:%s %s %s",
+		c.Request.Method,
+		c.Request.URL,
+		header,
+		string(bodyBytes),
+	))
+
+	for _, header := range route.Response.Headers {
+		c.Header(header.Key, header.Value)
+	}
+
+	for _, param := range c.Params {
+		route.Response.Body = strings.Replace(route.Response.Body, ":"+param.Key, param.Value, -1)
+	}
+
+	c.String(route.Response.StatusCode, route.Response.Body)
 }
