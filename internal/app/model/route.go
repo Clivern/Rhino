@@ -37,7 +37,7 @@ func GetDebugRoutes() ([]Route, error) {
 	err := viper.UnmarshalKey("debug", &routes)
 
 	if err != nil {
-		return nil, err
+		return routes, err
 	}
 
 	return routes, nil
@@ -50,7 +50,7 @@ func GetMockRoutes() ([]Route, error) {
 	err := viper.UnmarshalKey("mock", &routes)
 
 	if err != nil {
-		return nil, err
+		return routes, err
 	}
 
 	return routes, nil
