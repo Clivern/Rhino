@@ -298,10 +298,11 @@ Body: {{ request.body }}
 </html>
 `
 
-	homeTpl = strings.ReplaceAll(
+	homeTpl = strings.Replace(
 		homeTpl,
 		"APP_PROJECTS_URL",
 		fmt.Sprintf("%s/api/requests", strings.TrimSuffix(viper.GetString("app.domain"), "/")),
+        -1,
 	)
 	c.Writer.WriteHeader(http.StatusOK)
 	c.Writer.Write([]byte(homeTpl))
