@@ -11,7 +11,7 @@
     </p>
 </p>
 
-Rhino is an HTTP Mocking & Debugging Service. It enables easy mocking of any HTTP web service for testing and debugging purposes.
+Rhino is an HTTP Mocking & Debugging Service. It enables easy mocking of any HTTP web service for testing and debugging purposes. Also it can simulate high latencies and failures to make sure your services have the capability to withstand and recover from failures.
 
 ## Documentation
 
