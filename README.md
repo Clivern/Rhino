@@ -68,7 +68,7 @@ Create the config file `config.prod.json`
     "log": {
         "level": "info",
         "output": "stdout or /var/log/rhino.log",
-        "format": "console or json"
+        "format": "text or json"
     }
 }
 ```
@@ -76,13 +76,13 @@ Create the config file `config.prod.json`
 Run Rhino with that config file
 
 ```zsh
-$ ./Rhino --config=/path/to/config.prod.json
+$ ./rhino serve -c /custom/path/config.prod.json
 ```
 
 Check the release.
 
 ```zsh
-$ ./Rhino --get=release
+$ ./rhino version
 ```
 
 Test it.

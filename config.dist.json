@@ -1,6 +1,6 @@
 {
     "app": {
-        "mode": "prod",
+        "mode": "dev",
         "port": "8080",
         "domain": "http://127.0.0.1:8080",
         "tls": {
@@ -40,6 +40,6 @@
     "log": {
         "level": "info",
         "output": "stdout",
-        "format": "console"
+        "format": "json"
     }
 }
