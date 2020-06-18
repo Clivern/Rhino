@@ -41,7 +41,7 @@ func Debug(c *gin.Context) {
 	if rand.Intn(100) < failCount {
 		log.WithFields(log.Fields{
 			"method": c.Request.Method,
-			"url":    c.Request.URL,
+			"url":    c.Request.URL.Path,
 			"header": header,
 			"body":   string(bodyBytes),
 		}).Info("Failed Request")
@@ -56,7 +56,7 @@ func Debug(c *gin.Context) {
 
 	log.WithFields(log.Fields{
 		"method": c.Request.Method,
-		"url":    c.Request.URL,
+		"url":    c.Request.URL.Path,
 		"header": header,
 		"body":   string(bodyBytes),
 	}).Info("Request Success")

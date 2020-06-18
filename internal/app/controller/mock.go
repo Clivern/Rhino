@@ -41,7 +41,7 @@ func Mock(c *gin.Context) {
 	if rand.Intn(100) < failCount {
 		log.WithFields(log.Fields{
 			"method": c.Request.Method,
-			"url":    c.Request.URL,
+			"url":    c.Request.URL.Path,
 			"header": header,
 			"body":   string(bodyBytes),
 		}).Info("Failed Request")
@@ -56,13 +56,24 @@ func Mock(c *gin.Context) {
 
 	log.WithFields(log.Fields{
 		"method": c.Request.Method,
-		"url":    c.Request.URL,
+		"url":    c.Request.URL.Path,
 		"header": header,
 		"body":   string(bodyBytes),
 	}).Info("Request Success")
 
 	for _, header := range route.Response.Headers {
 		c.Header(header.Key, header.Value)
+	}
+
+	if strings.Contains(route.Response.Body, "@FilePath:") {
+		path := strings.Replace(route.Response.Body, "@FilePath:", "", -1)
+		content, err := ioutil.ReadFile(path)
+
+		if err != nil {
+			panic(err)
+		}
+
+		route.Response.Body = string(content)
 	}
 
 	for _, param := range c.Params {

@@ -11,7 +11,7 @@
     },
     "mock": [
         {
-            "path": "/api/v2/service/mock/:id",
+            "path": "/api/v2/service1/mock/:id",
             "request": {
                 "method": "get"
             },
@@ -21,6 +21,23 @@
                     {"key": "Content-Type", "value": "application/json"}
                 ],
                 "body": "{\"id\": \":id\"}"
+            },
+            "chaos": {
+                "latency": "0s",
+                "failRate": "0%"
+            }
+        },
+        {
+            "path": "/api/v2/service2/mock/:id",
+            "request": {
+                "method": "get"
+            },
+            "response": {
+                "statusCode": 200,
+                "headers": [
+                    {"key": "Content-Type", "value": "application/json"}
+                ],
+                "body": "@FilePath:/path/to/service2/route.response.json"
             },
             "chaos": {
                 "latency": "0s",
