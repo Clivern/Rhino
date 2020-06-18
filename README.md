@@ -1,11 +1,11 @@
 <p align="center">
-    <img alt="Rhino Logo" src="https://raw.githubusercontent.com/clivern/Rhino/master/assets/img/gopher.png?v=0.1.1" width="150" />
+    <img alt="Rhino Logo" src="https://raw.githubusercontent.com/clivern/Rhino/master/assets/img/gopher.png?v=0.2.0" width="150" />
     <h3 align="center">Rhino</h3>
     <p align="center">HTTP Mocking & Debugging Service</p>
     <p align="center">
         <a href="https://travis-ci.com/Clivern/Rhino"><img src="https://travis-ci.com/Clivern/Rhino.svg?branch=master"></a>
-        <a href="https://github.com/Clivern/Rhino/releases"><img src="https://img.shields.io/badge/Version-0.1.1-red.svg"></a>
-        <a href="https://goreportcard.com/report/github.com/Clivern/Rhino"><img src="https://goreportcard.com/badge/github.com/clivern/Rhino?v=0.1.1"></a>
+        <a href="https://github.com/Clivern/Rhino/releases"><img src="https://img.shields.io/badge/Version-0.2.0-red.svg"></a>
+        <a href="https://goreportcard.com/report/github.com/Clivern/Rhino"><img src="https://goreportcard.com/badge/github.com/clivern/Rhino?v=0.2.0"></a>
         <a href="https://hub.docker.com/r/clivern/rhino"><img src="https://img.shields.io/badge/Docker-Latest-green"></a>
         <a href="https://github.com/Clivern/Rhino/blob/master/LICENSE"><img src="https://img.shields.io/badge/LICENSE-MIT-orange.svg"></a>
     </p>
@@ -39,7 +39,7 @@ Create the config file `config.prod.json`
     },
     "mock": [
         {
-            "path": "/api/v2/service/mock/:id",
+            "path": "/api/v2/service1/mock/:id",
             "request": {
                 "method": "get"
             },
@@ -49,6 +49,23 @@ Create the config file `config.prod.json`
                     {"key": "Content-Type", "value": "application/json"}
                 ],
                 "body": "{\"id\": \":id\"}"
+            },
+            "chaos": {
+                "latency": "0s",
+                "failRate": "0%"
+            }
+        },
+        {
+            "path": "/api/v2/service2/mock/:id",
+            "request": {
+                "method": "get"
+            },
+            "response": {
+                "statusCode": 200,
+                "headers": [
+                    {"key": "Content-Type", "value": "application/json"}
+                ],
+                "body": "@FilePath:/path/to/service2/route.response.json"
             },
             "chaos": {
                 "latency": "0s",
@@ -68,7 +85,7 @@ Create the config file `config.prod.json`
     "log": {
         "level": "info",
         "output": "stdout or /var/log/rhino.log",
-        "format": "console or json"
+        "format": "text or json"
     }
 }
 ```
@@ -76,13 +93,13 @@ Create the config file `config.prod.json`
 Run Rhino with that config file
 
 ```zsh
-$ ./Rhino --config=/path/to/config.prod.json
+$ ./rhino serve -c /custom/path/config.prod.json
 ```
 
 Check the release.
 
 ```zsh
-$ ./Rhino --get=release
+$ ./rhino version
 ```
 
 Test it.

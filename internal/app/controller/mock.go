@@ -7,7 +7,6 @@ package controller
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -16,9 +15,9 @@ import (
 	"time"
 
 	"github.com/clivern/rhino/internal/app/model"
-	"github.com/clivern/rhino/internal/app/module"
 
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 )
 
 // Mock controller
@@ -33,10 +32,6 @@ func Mock(c *gin.Context) {
 	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
 	header, _ := json.Marshal(c.Request.Header)
 
-	logger, _ := module.NewLogger()
-
-	defer logger.Sync()
-
 	route := model.GetRoute(c.FullPath(), c.Request.Method)
 
 	rand.Seed(time.Now().UnixNano())
@@ -44,13 +39,13 @@ func Mock(c *gin.Context) {
 	failCount, _ := strconv.Atoi(strings.Replace(route.Chaos.FailRate, "%", "", -1))
 
 	if rand.Intn(100) < failCount {
-		logger.Info(fmt.Sprintf(
-			"FAILED %s:%s %s %s",
-			c.Request.Method,
-			c.Request.URL,
-			header,
-			string(bodyBytes),
-		))
+		log.WithFields(log.Fields{
+			"method": c.Request.Method,
+			"url":    c.Request.URL.Path,
+			"header": header,
+			"body":   string(bodyBytes),
+		}).Info("Failed Request")
+
 		c.Status(http.StatusInternalServerError)
 		return
 	}
@@ -59,16 +54,26 @@ func Mock(c *gin.Context) {
 
 	time.Sleep(time.Duration(latencySeconds) * time.Second)
 
-	logger.Info(fmt.Sprintf(
-		"%s:%s %s %s",
-		c.Request.Method,
-		c.Request.URL,
-		header,
-		string(bodyBytes),
-	))
+	log.WithFields(log.Fields{
+		"method": c.Request.Method,
+		"url":    c.Request.URL.Path,
+		"header": header,
+		"body":   string(bodyBytes),
+	}).Info("Request Success")
 
 	for _, header := range route.Response.Headers {
 		c.Header(header.Key, header.Value)
+	}
+
+	if strings.Contains(route.Response.Body, "@FilePath:") {
+		path := strings.Replace(route.Response.Body, "@FilePath:", "", -1)
+		content, err := ioutil.ReadFile(path)
+
+		if err != nil {
+			panic(err)
+		}
+
+		route.Response.Body = string(content)
 	}
 
 	for _, param := range c.Params {

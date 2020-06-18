@@ -1,6 +1,6 @@
 FROM golang:1.14.4
 
-ARG RHINO_VERSION=0.1.1
+ARG RHINO_VERSION=0.2.0
 
 ENV GO111MODULE=on
 
@@ -17,10 +17,10 @@ RUN mv Rhino rhino
 
 COPY ./config.dist.json /app/configs/
 
-RUN ./rhino --get=release
+RUN ./rhino version
 
 EXPOSE 8080
 
 VOLUME /app/configs
 
-CMD ["./rhino", "--config", "/app/configs/config.dist.json"]
+CMD ["./rhino", "serve", "-c", "/app/configs/config.dist.json"]

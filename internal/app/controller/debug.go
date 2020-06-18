@@ -7,7 +7,6 @@ package controller
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -16,9 +15,9 @@ import (
 	"time"
 
 	"github.com/clivern/rhino/internal/app/model"
-	"github.com/clivern/rhino/internal/app/module"
 
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 )
 
 // Debug controller
@@ -33,10 +32,6 @@ func Debug(c *gin.Context) {
 	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
 	header, _ := json.Marshal(c.Request.Header)
 
-	logger, _ := module.NewLogger()
-
-	defer logger.Sync()
-
 	route := model.GetRoute(c.FullPath(), "")
 
 	rand.Seed(time.Now().UnixNano())
@@ -44,13 +39,13 @@ func Debug(c *gin.Context) {
 	failCount, _ := strconv.Atoi(strings.Replace(route.Chaos.FailRate, "%", "", -1))
 
 	if rand.Intn(100) < failCount {
-		logger.Info(fmt.Sprintf(
-			"FAILED %s:%s %s %s",
-			c.Request.Method,
-			c.Request.URL,
-			header,
-			string(bodyBytes),
-		))
+		log.WithFields(log.Fields{
+			"method": c.Request.Method,
+			"url":    c.Request.URL.Path,
+			"header": header,
+			"body":   string(bodyBytes),
+		}).Info("Failed Request")
+
 		c.Status(http.StatusInternalServerError)
 		return
 	}
@@ -59,13 +54,12 @@ func Debug(c *gin.Context) {
 
 	time.Sleep(time.Duration(latencySeconds) * time.Second)
 
-	logger.Info(fmt.Sprintf(
-		"%s:%s %s %s",
-		c.Request.Method,
-		c.Request.URL,
-		header,
-		string(bodyBytes),
-	))
+	log.WithFields(log.Fields{
+		"method": c.Request.Method,
+		"url":    c.Request.URL.Path,
+		"header": header,
+		"body":   string(bodyBytes),
+	}).Info("Request Success")
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": "ok",
