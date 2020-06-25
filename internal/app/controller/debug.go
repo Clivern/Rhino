@@ -32,7 +32,13 @@ func Debug(c *gin.Context) {
 	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
 	header, _ := json.Marshal(c.Request.Header)
 
-	route := model.GetRoute(c.FullPath(), "")
+	parameters := make(map[string]string)
+
+	for k, v := range c.Request.URL.Query() {
+		parameters[k] = v[0]
+	}
+
+	route := model.GetRoute(c.FullPath(), "", parameters)
 
 	rand.Seed(time.Now().UnixNano())
 
@@ -40,10 +46,11 @@ func Debug(c *gin.Context) {
 
 	if rand.Intn(100) < failCount {
 		log.WithFields(log.Fields{
-			"method": c.Request.Method,
-			"url":    c.Request.URL.Path,
-			"header": header,
-			"body":   string(bodyBytes),
+			"method":     c.Request.Method,
+			"url":        c.Request.URL.Path,
+			"header":     header,
+			"parameters": parameters,
+			"body":       string(bodyBytes),
 		}).Info("Failed Request")
 
 		c.Status(http.StatusInternalServerError)
@@ -55,10 +62,11 @@ func Debug(c *gin.Context) {
 	time.Sleep(time.Duration(latencySeconds) * time.Second)
 
 	log.WithFields(log.Fields{
-		"method": c.Request.Method,
-		"url":    c.Request.URL.Path,
-		"header": header,
-		"body":   string(bodyBytes),
+		"method":     c.Request.Method,
+		"url":        c.Request.URL.Path,
+		"header":     header,
+		"parameters": parameters,
+		"body":       string(bodyBytes),
 	}).Info("Request Success")
 
 	c.JSON(http.StatusOK, gin.H{

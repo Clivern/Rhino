@@ -13,7 +13,8 @@
         {
             "path": "/api/v2/service1/mock/:id",
             "request": {
-                "method": "get"
+                "method": "get",
+                "parameters": {}
             },
             "response": {
                 "statusCode": 200,
@@ -30,14 +31,18 @@
         {
             "path": "/api/v2/service2/mock/:id",
             "request": {
-                "method": "get"
+                "method": "get",
+                "parameters": {
+                    "var_param": ":var_param",
+                    "fixed_param": 10
+                }
             },
             "response": {
                 "statusCode": 200,
                 "headers": [
                     {"key": "Content-Type", "value": "application/json"}
                 ],
-                "body": "@FilePath:/path/to/service2/route.response.json"
+                "body": "@json:/path/to/service2/route.response.json"
             },
             "chaos": {
                 "latency": "0s",

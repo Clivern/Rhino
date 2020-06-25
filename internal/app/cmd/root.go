@@ -12,7 +12,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use: "beetle",
+	Use: "rhino",
 	Short: `Work seamlessly with Rhino from the command line.
 
 We'd love to hear your feedback at <https://github.com/Clivern/Rhino>`,

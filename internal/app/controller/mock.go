@@ -30,9 +30,16 @@ func Mock(c *gin.Context) {
 	}
 
 	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+
 	header, _ := json.Marshal(c.Request.Header)
 
-	route := model.GetRoute(c.FullPath(), c.Request.Method)
+	parameters := make(map[string]string)
+
+	for k, v := range c.Request.URL.Query() {
+		parameters[k] = v[0]
+	}
+
+	route := model.GetRoute(c.FullPath(), c.Request.Method, parameters)
 
 	rand.Seed(time.Now().UnixNano())
 
@@ -40,10 +47,11 @@ func Mock(c *gin.Context) {
 
 	if rand.Intn(100) < failCount {
 		log.WithFields(log.Fields{
-			"method": c.Request.Method,
-			"url":    c.Request.URL.Path,
-			"header": header,
-			"body":   string(bodyBytes),
+			"method":     c.Request.Method,
+			"url":        c.Request.URL.Path,
+			"header":     header,
+			"parameters": parameters,
+			"body":       string(bodyBytes),
 		}).Info("Failed Request")
 
 		c.Status(http.StatusInternalServerError)
@@ -55,18 +63,19 @@ func Mock(c *gin.Context) {
 	time.Sleep(time.Duration(latencySeconds) * time.Second)
 
 	log.WithFields(log.Fields{
-		"method": c.Request.Method,
-		"url":    c.Request.URL.Path,
-		"header": header,
-		"body":   string(bodyBytes),
+		"method":     c.Request.Method,
+		"url":        c.Request.URL.Path,
+		"header":     header,
+		"parameters": parameters,
+		"body":       string(bodyBytes),
 	}).Info("Request Success")
 
 	for _, header := range route.Response.Headers {
 		c.Header(header.Key, header.Value)
 	}
 
-	if strings.Contains(route.Response.Body, "@FilePath:") {
-		path := strings.Replace(route.Response.Body, "@FilePath:", "", -1)
+	if strings.Contains(route.Response.Body, "@json:") {
+		path := strings.Replace(route.Response.Body, "@json:", "", -1)
 		content, err := ioutil.ReadFile(path)
 
 		if err != nil {
@@ -78,6 +87,15 @@ func Mock(c *gin.Context) {
 
 	for _, param := range c.Params {
 		route.Response.Body = strings.Replace(route.Response.Body, ":"+param.Key, param.Value, -1)
+	}
+
+	for key, value := range route.Request.Parameters {
+
+		if !strings.HasPrefix(value, ":") {
+			continue
+		}
+
+		route.Response.Body = strings.Replace(route.Response.Body, value, parameters[key], -1)
 	}
 
 	c.String(route.Response.StatusCode, route.Response.Body)

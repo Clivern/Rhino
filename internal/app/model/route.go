@@ -14,7 +14,8 @@ import (
 type Route struct {
 	Path    string `mapstructure:"path"`
 	Request struct {
-		Method string `mapstructure:"method"`
+		Method     string            `mapstructure:"method"`
+		Parameters map[string]string `mapstructure:"parameters"`
 	} `mapstructure:"request"`
 	Response struct {
 		StatusCode int `mapstructure:"statusCode"`
@@ -57,21 +58,63 @@ func GetMockRoutes() ([]Route, error) {
 }
 
 // GetRoute get route object with path
-func GetRoute(path string, method string) Route {
+func GetRoute(path string, method string, parameters map[string]string) Route {
 	debugRoutes, _ := GetDebugRoutes()
 
 	for _, route := range debugRoutes {
-		if path == route.Path {
-			return route
+		if path != route.Path {
+			continue
 		}
+
+		// Match parametes
+		if len(route.Request.Parameters) != 0 {
+			status := true
+
+			for key, value := range route.Request.Parameters {
+				if _, ok := parameters[key]; !ok {
+					status = false
+				}
+
+				if !strings.HasPrefix(value, ":") && value != parameters[key] {
+					status = false
+				}
+			}
+
+			if !status {
+				continue
+			}
+		}
+
+		return route
 	}
 
 	mockRoutes, _ := GetMockRoutes()
 
 	for _, route := range mockRoutes {
-		if path == route.Path && strings.ToLower(method) == strings.ToLower(route.Request.Method) {
-			return route
+		if path != route.Path || strings.ToLower(method) != strings.ToLower(route.Request.Method) {
+			continue
 		}
+
+		// Match parametes
+		if len(route.Request.Parameters) != 0 {
+			status := true
+
+			for key, value := range route.Request.Parameters {
+				if _, ok := parameters[key]; !ok {
+					status = false
+				}
+
+				if !strings.HasPrefix(value, ":") && value != parameters[key] {
+					status = false
+				}
+			}
+
+			if !status {
+				continue
+			}
+		}
+
+		return route
 	}
 
 	return Route{}

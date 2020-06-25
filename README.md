@@ -1,11 +1,11 @@
 <p align="center">
-    <img alt="Rhino Logo" src="https://raw.githubusercontent.com/clivern/Rhino/master/assets/img/gopher.png?v=0.2.0" width="150" />
+    <img alt="Rhino Logo" src="https://raw.githubusercontent.com/clivern/Rhino/master/assets/img/gopher.png?v=1.0.0" width="150" />
     <h3 align="center">Rhino</h3>
     <p align="center">HTTP Mocking & Debugging Service</p>
     <p align="center">
         <a href="https://travis-ci.com/Clivern/Rhino"><img src="https://travis-ci.com/Clivern/Rhino.svg?branch=master"></a>
-        <a href="https://github.com/Clivern/Rhino/releases"><img src="https://img.shields.io/badge/Version-0.2.0-red.svg"></a>
-        <a href="https://goreportcard.com/report/github.com/Clivern/Rhino"><img src="https://goreportcard.com/badge/github.com/clivern/Rhino?v=0.2.0"></a>
+        <a href="https://github.com/Clivern/Rhino/releases"><img src="https://img.shields.io/badge/Version-1.0.0-red.svg"></a>
+        <a href="https://goreportcard.com/report/github.com/Clivern/Rhino"><img src="https://goreportcard.com/badge/github.com/clivern/Rhino?v=1.0.0"></a>
         <a href="https://hub.docker.com/r/clivern/rhino"><img src="https://img.shields.io/badge/Docker-Latest-green"></a>
         <a href="https://github.com/Clivern/Rhino/blob/master/LICENSE"><img src="https://img.shields.io/badge/LICENSE-MIT-orange.svg"></a>
     </p>
@@ -58,14 +58,18 @@ Create the config file `config.prod.json`
         {
             "path": "/api/v2/service2/mock/:id",
             "request": {
-                "method": "get"
+                "method": "get",
+                "parameters": {
+                    "var_param": ":var_param",
+                    "fixed_param": 10
+                }
             },
             "response": {
                 "statusCode": 200,
                 "headers": [
                     {"key": "Content-Type", "value": "application/json"}
                 ],
-                "body": "@FilePath:/path/to/service2/route.response.json"
+                "body": "@json:/path/to/service2/route.response.json"
             },
             "chaos": {
                 "latency": "0s",

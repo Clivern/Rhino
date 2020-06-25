@@ -96,7 +96,7 @@ ci: style check_license test vet lint
 ## run: Run the service
 run:
 	-cp -n config.dist.json config.prod.json
-	$(GO) run rhino.go
+	$(GO) run rhino.go serve -c config.prod.json
 
 
 .PHONY: help
