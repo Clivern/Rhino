@@ -18,6 +18,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 // Mock controller
@@ -76,6 +77,7 @@ func Mock(c *gin.Context) {
 
 	if strings.Contains(route.Response.Body, "@json:") {
 		path := strings.Replace(route.Response.Body, "@json:", "", -1)
+		path = strings.Replace(path, "@config_dir", viper.GetString("configPath"), -1)
 		content, err := ioutil.ReadFile(path)
 
 		if err != nil {

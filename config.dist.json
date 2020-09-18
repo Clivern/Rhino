@@ -42,7 +42,7 @@
                 "headers": [
                     {"key": "Content-Type", "value": "application/json"}
                 ],
-                "body": "@json:/path/to/service2/route.response.json"
+                "body": "@json:@config_dir/route.response.json"
             },
             "chaos": {
                 "latency": "0s",
