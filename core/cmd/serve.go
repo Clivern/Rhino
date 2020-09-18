@@ -15,9 +15,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/clivern/rhino/internal/app/controller"
-	"github.com/clivern/rhino/internal/app/model"
-	"github.com/clivern/rhino/internal/app/module"
+	"github.com/clivern/rhino/core/controller"
+	"github.com/clivern/rhino/core/middleware"
+	"github.com/clivern/rhino/core/model"
+	"github.com/clivern/rhino/core/module"
 
 	"github.com/drone/envsubst"
 	"github.com/gin-gonic/gin"
@@ -121,6 +122,8 @@ var serveCmd = &cobra.Command{
 		}
 
 		r := gin.Default()
+
+		r.Use(middleware.Cors())
 
 		r.GET("/favicon.ico", func(c *gin.Context) {
 			c.String(http.StatusNoContent, "")

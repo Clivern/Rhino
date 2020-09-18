@@ -5,7 +5,7 @@
 package main
 
 import (
-	"github.com/clivern/rhino/internal/app/cmd"
+	"github.com/clivern/rhino/core/cmd"
 )
 
 var (
