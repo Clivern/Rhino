@@ -14,14 +14,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/clivern/rhino/internal/app/model"
+	"github.com/clivern/rhino/core/model"
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 )
 
-// Mock controller
-func Mock(c *gin.Context) {
+// Debug controller
+func Debug(c *gin.Context) {
 	var bodyBytes []byte
 
 	// Workaround for issue https://github.com/gin-gonic/gin/issues/1651
@@ -30,7 +30,6 @@ func Mock(c *gin.Context) {
 	}
 
 	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
-
 	header, _ := json.Marshal(c.Request.Header)
 
 	parameters := make(map[string]string)
@@ -39,7 +38,7 @@ func Mock(c *gin.Context) {
 		parameters[k] = v[0]
 	}
 
-	route := model.GetRoute(c.FullPath(), c.Request.Method, parameters)
+	route := model.GetRoute(c.FullPath(), "", parameters)
 
 	rand.Seed(time.Now().UnixNano())
 
@@ -70,33 +69,7 @@ func Mock(c *gin.Context) {
 		"body":       string(bodyBytes),
 	}).Info("Request Success")
 
-	for _, header := range route.Response.Headers {
-		c.Header(header.Key, header.Value)
-	}
-
-	if strings.Contains(route.Response.Body, "@json:") {
-		path := strings.Replace(route.Response.Body, "@json:", "", -1)
-		content, err := ioutil.ReadFile(path)
-
-		if err != nil {
-			panic(err)
-		}
-
-		route.Response.Body = string(content)
-	}
-
-	for _, param := range c.Params {
-		route.Response.Body = strings.Replace(route.Response.Body, ":"+param.Key, param.Value, -1)
-	}
-
-	for key, value := range route.Request.Parameters {
-
-		if !strings.HasPrefix(value, ":") {
-			continue
-		}
-
-		route.Response.Body = strings.Replace(route.Response.Body, value, parameters[key], -1)
-	}
-
-	c.String(route.Response.StatusCode, route.Response.Body)
+	c.JSON(http.StatusOK, gin.H{
+		"status": "ok",
+	})
 }

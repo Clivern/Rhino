@@ -227,24 +227,10 @@
             <header class="header" id="home">
                 <section class="container">
                     <img src="https://raw.githubusercontent.com/clivern/Rhino/master/assets/img/gopher.png?v=0.1.1" width="15%">
-                    <h1 class="title">{{ name }}</h1>
-                    <p class="description">{{ description }}</p>
+                    <h1 class="title">Rhino</h1>
+                    <p class="description">HTTP Mocking & Debugging Service.</p>
                 </section>
             </header>
-            <template v-for="request in requests">
-                <section class="container">
-                    <pre class="code prettyprint prettyprinted" style=""><code class="code-content">
-Status: {{ request.status }}
-Route: {{ request.route }}
-URI: {{ request.uri }}
-Time: {{ request.time }}
-Method: {{ request.method }}
-Headers: {{ request.headers }}
-StatusCode: {{ request.statusCode }}
-Body: {{ request.body }}
-                    </code></pre>
-                </section>
-            </template>
             <section class="container" id="contributing">
                 <h3 class="title">Contributing</h3>
                 <p>Want to contribute? Follow these<a href="https://github.com/Clivern/Rhino/blob/master/CONTRIBUTING.md" title="Contributing"> Recommendations</a>.</p>
@@ -255,35 +241,5 @@ Body: {{ request.body }}
                 </section>
             </footer>
         </main>
-        <script src="https://unpkg.com/vue@2.6.10/dist/vue.min.js"></script>
-        <script src="https://unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
-        <script type="text/javascript" charset="utf-8">
-            var app = new Vue({
-                el: '#app',
-                data: {
-                    name: "Rhino",
-                    description: "HTTP Mocking & Debugging Service.",
-                    requests: [{
-                        "time": "2020/10/19",
-                        "uri": "/v2/api/order/1",
-                        "route": "v2/api/order/:id",
-                        "statusCode": 200,
-                        "method": "GET",
-                        "headers": [{"key": "x-auth", "value": "123"}],
-                        "body": "{\"id\": \"1\"}",
-                        "status": "success"
-                    }]
-                },
-                methods: {
-
-                },
-                mounted () {
-                    axios
-                      .get('http://127.0.0.1:8080/requests/data.json')
-                      .then(response => (this.requests = response))
-
-                }
-            })
-        </script>
     </body>
 </html>

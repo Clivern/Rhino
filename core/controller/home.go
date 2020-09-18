@@ -5,12 +5,9 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 )
 
 // Index controller
@@ -245,24 +242,11 @@ func Index(c *gin.Context) {
             <header class="header" id="home">
                 <section class="container">
                     <img src="https://raw.githubusercontent.com/clivern/Rhino/master/assets/img/gopher.png?v=0.1.1" width="15%">
-                    <h1 class="title">{{ name }}</h1>
-                    <p class="description">{{ description }}</p>
+                    <h1 class="title">Rhino</h1>
+                    <p class="description">HTTP Mocking & Debugging Service.</p>
                 </section>
             </header>
-            <template v-for="request in requests">
-                <section class="container">
-                    <pre class="code prettyprint prettyprinted" style=""><code class="code-content">
-Status: {{ request.status }}
-Route: {{ request.route }}
-URI: {{ request.uri }}
-Time: {{ request.time }}
-Method: {{ request.method }}
-Headers: {{ request.headers }}
-StatusCode: {{ request.statusCode }}
-Body: {{ request.body }}
-                    </code></pre>
-                </section>
-            </template>
+            <br/><br/><br/><br/>
             <section class="container" id="contributing">
                 <h3 class="title">Contributing</h3>
                 <p>Want to contribute? Follow these<a href="https://github.com/Clivern/Rhino/blob/master/CONTRIBUTING.md" title="Contributing"> Recommendations</a>.</p>
@@ -273,37 +257,8 @@ Body: {{ request.body }}
                 </section>
             </footer>
         </main>
-        <script src="https://unpkg.com/vue@2.6.10/dist/vue.min.js"></script>
-        <script src="https://unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
-        <script type="text/javascript" charset="utf-8">
-            var app = new Vue({
-                el: '#app',
-                data: {
-                    name: "Rhino",
-                    description: "HTTP Mocking & Debugging Service.",
-                    requests: []
-                },
-                methods: {
-
-                },
-                mounted () {
-                    axios
-                      .get('APP_PROJECTS_URL')
-                      .then(response => (this.requests = response.data))
-
-                }
-            })
-        </script>
     </body>
-</html>
-`
-
-	homeTpl = strings.Replace(
-		homeTpl,
-		"APP_PROJECTS_URL",
-		fmt.Sprintf("%s/api/requests", strings.TrimSuffix(viper.GetString("app.domain"), "/")),
-		-1,
-	)
+</html>`
 	c.Writer.WriteHeader(http.StatusOK)
 	c.Writer.Write([]byte(homeTpl))
 	return
