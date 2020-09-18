@@ -64,6 +64,8 @@ var serveCmd = &cobra.Command{
 			))
 		}
 
+		viper.SetDefault("configPath", filepath.Dir(config))
+
 		if viper.GetString("log.output") != "stdout" {
 			fs := module.FileSystem{}
 			dir, _ := filepath.Split(viper.GetString("log.output"))
