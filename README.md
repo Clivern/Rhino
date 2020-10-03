@@ -1,11 +1,11 @@
 <p align="center">
-    <img alt="Rhino Logo" src="https://raw.githubusercontent.com/clivern/Rhino/master/assets/img/gopher.png?v=1.2.0" width="150" />
+    <img alt="Rhino Logo" src="https://raw.githubusercontent.com/clivern/Rhino/master/assets/img/gopher.png?v=1.2.1" width="150" />
     <h3 align="center">Rhino</h3>
     <p align="center">HTTP Mocking & Debugging Service</p>
     <p align="center">
         <a href="https://travis-ci.com/Clivern/Rhino"><img src="https://travis-ci.com/Clivern/Rhino.svg?branch=master"></a>
-        <a href="https://github.com/Clivern/Rhino/releases"><img src="https://img.shields.io/badge/Version-1.2.0-red.svg"></a>
-        <a href="https://goreportcard.com/report/github.com/Clivern/Rhino"><img src="https://goreportcard.com/badge/github.com/clivern/Rhino?v=1.2.0"></a>
+        <a href="https://github.com/Clivern/Rhino/releases"><img src="https://img.shields.io/badge/Version-1.2.1-red.svg"></a>
+        <a href="https://goreportcard.com/report/github.com/Clivern/Rhino"><img src="https://goreportcard.com/badge/github.com/clivern/Rhino?v=1.2.1"></a>
         <a href="https://hub.docker.com/r/clivern/rhino"><img src="https://img.shields.io/badge/Docker-Latest-green"></a>
         <a href="https://github.com/Clivern/Rhino/blob/master/LICENSE"><img src="https://img.shields.io/badge/LICENSE-MIT-orange.svg"></a>
     </p>

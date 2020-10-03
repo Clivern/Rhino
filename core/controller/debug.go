@@ -6,7 +6,6 @@ package controller
 
 import (
 	"bytes"
-	"encoding/json"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -30,12 +29,16 @@ func Debug(c *gin.Context) {
 	}
 
 	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
-	header, _ := json.Marshal(c.Request.Header)
 
 	parameters := make(map[string]string)
+	headers := make(map[string]string)
 
 	for k, v := range c.Request.URL.Query() {
 		parameters[k] = v[0]
+	}
+
+	for k, v := range c.Request.Header {
+		headers[k] = v[0]
 	}
 
 	route := model.GetRoute(c.FullPath(), "", parameters)
@@ -48,7 +51,7 @@ func Debug(c *gin.Context) {
 		log.WithFields(log.Fields{
 			"method":     c.Request.Method,
 			"url":        c.Request.URL.Path,
-			"header":     header,
+			"headers":    headers,
 			"parameters": parameters,
 			"body":       string(bodyBytes),
 		}).Info("Failed Request")
@@ -64,7 +67,7 @@ func Debug(c *gin.Context) {
 	log.WithFields(log.Fields{
 		"method":     c.Request.Method,
 		"url":        c.Request.URL.Path,
-		"header":     header,
+		"headers":    headers,
 		"parameters": parameters,
 		"body":       string(bodyBytes),
 	}).Info("Request Success")
