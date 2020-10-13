@@ -113,6 +113,16 @@ Test it.
 $ curl http://127.0.0.1:8080/_health
 ```
 
+### Docker
+
+Clone and then run docker containers.
+
+```zsh
+$ git clone https://github.com/Clivern/Rhino.git
+$ cd Rhino/deployment/docker-compose
+$ docker-compose up -d
+```
+
 
 ## Versioning
 
