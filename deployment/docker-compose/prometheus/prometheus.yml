@@ -20,4 +20,4 @@ scrape_configs:
     static_configs:
       -
         targets:
-          - "xx.ngrok.io" # rhino domain goes here
+          - "localhost:8080" # rhino domain goes here
