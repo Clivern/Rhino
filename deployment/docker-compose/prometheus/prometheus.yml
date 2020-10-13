@@ -1,0 +1,23 @@
+# my global config
+global:
+  evaluation_interval: 15s
+  external_labels:
+    monitor: rhino-monitor
+  scrape_interval: 15s
+rule_files: ~
+scrape_configs:
+  -
+    job_name: prometheus
+    scrape_interval: 5s
+    static_configs:
+      -
+        targets:
+          - "localhost:9090"
+  -
+    job_name: rhino
+    metrics_path: /_metrics
+    scrape_interval: 5s
+    static_configs:
+      -
+        targets:
+          - "xx.ngrok.io" # rhino domain goes here
