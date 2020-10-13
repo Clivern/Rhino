@@ -20,4 +20,4 @@ scrape_configs:
     static_configs:
       -
         targets:
-          - "localhost:8080" # rhino domain goes here
+          - "localhost:8080"
