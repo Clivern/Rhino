@@ -126,6 +126,9 @@ var serveCmd = &cobra.Command{
 		r := gin.Default()
 
 		r.Use(middleware.Cors())
+		r.Use(middleware.Correlation())
+		r.Use(middleware.Logger())
+		r.Use(middleware.Metric())
 
 		r.GET("/favicon.ico", func(c *gin.Context) {
 			c.String(http.StatusNoContent, "")
@@ -133,7 +136,7 @@ var serveCmd = &cobra.Command{
 
 		r.GET("/", controller.Index)
 		r.GET("/_health", controller.Health)
-		r.GET("/api/requests", controller.Requests)
+		r.GET("/_metrics", gin.WrapH(controller.Metrics()))
 
 		debugRoutes, err := model.GetDebugRoutes()
 
