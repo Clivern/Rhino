@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/clivern/rhino/core/model"
+	"github.com/clivern/rhino/core/module"
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
@@ -100,6 +101,14 @@ func Mock(c *gin.Context) {
 		}
 
 		route.Response.Body = strings.Replace(route.Response.Body, value, parameters[key], -1)
+	}
+
+	faker := &module.Faker{}
+	var err error
+	route.Response.Body, err = faker.Transform(route.Response.Body)
+
+	if err != nil {
+		panic(err)
 	}
 
 	c.String(route.Response.StatusCode, route.Response.Body)
