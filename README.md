@@ -1,11 +1,11 @@
 <p align="center">
-    <img alt="Rhino Logo" src="https://raw.githubusercontent.com/clivern/Rhino/master/assets/img/gopher.png?v=1.3.0" width="150" />
+    <img alt="Rhino Logo" src="https://raw.githubusercontent.com/clivern/Rhino/master/assets/img/gopher.png?v=1.4.0" width="150" />
     <h3 align="center">Rhino</h3>
     <p align="center">HTTP Mocking & Debugging Service</p>
     <p align="center">
         <a href="https://travis-ci.com/Clivern/Rhino"><img src="https://travis-ci.com/Clivern/Rhino.svg?branch=master"></a>
-        <a href="https://github.com/Clivern/Rhino/releases"><img src="https://img.shields.io/badge/Version-1.3.0-red.svg"></a>
-        <a href="https://goreportcard.com/report/github.com/Clivern/Rhino"><img src="https://goreportcard.com/badge/github.com/clivern/Rhino?v=1.3.0"></a>
+        <a href="https://github.com/Clivern/Rhino/releases"><img src="https://img.shields.io/badge/Version-1.4.0-red.svg"></a>
+        <a href="https://goreportcard.com/report/github.com/Clivern/Rhino"><img src="https://goreportcard.com/badge/github.com/clivern/Rhino?v=1.4.0"></a>
         <a href="https://hub.docker.com/r/clivern/rhino"><img src="https://img.shields.io/badge/Docker-Latest-green"></a>
         <a href="https://github.com/Clivern/Rhino/blob/master/LICENSE"><img src="https://img.shields.io/badge/LICENSE-MIT-orange.svg"></a>
     </p>
@@ -112,6 +112,53 @@ Test it.
 ```zsh
 $ curl http://127.0.0.1:8080/_health
 ```
+
+You can use fake data flags inside response body and rhino will auto generate them. Here is the full list of supported types:
+
+```bash
+Latitude: @fake(:lat)
+Longitude: @fake(:long)
+CreditCardNumber: @fake(:cc_number)
+CreditCardType: @fake(:cc_type)
+Email: @fake(:email)
+DomainName: @fake(:domain_name)
+IPV4: @fake(:ipv4)
+IPV6: @fake(:ipv6)
+Password: @fake(:password)
+PhoneNumber: @fake(:phone_number)
+MacAddress: @fake(:mac_address)
+URL: @fake(:url)
+UserName: @fake(:username)
+TollFreeNumber: @fake(:toll_free_number)
+E164PhoneNumber: @fake(:e_164_phone_number)
+TitleMale: @fake(:title_male)
+TitleFemale: @fake(:title_female)
+FirstName: @fake(:first_name)
+FirstNameMale: @fake(:first_name_male)
+FirstNameFemale: @fake(:first_name_female)
+LastName: @fake(:last_name)
+Name: @fake(:name)
+UnixTime: @fake(:unix_time)
+Date: @fake(:date)
+Time: @fake(:time)
+MonthName: @fake(:month_name)
+Year: @fake(:year)
+DayOfWeek: @fake(:day_of_week)
+DayOfMonth: @fake(:day_of_month)
+Timestamp: @fake(:timestamp)
+Century: @fake(:century)
+TimeZone: @fake(:timezone)
+TimePeriod: @fake(:time_period)
+Word: @fake(:word)
+Sentence: @fake(:sentence)
+Paragraph: @fake(:paragraph)
+Currency: @fake(:currency)
+Amount: @fake(:amount)
+AmountWithCurrency: @fake(:amount_with_currency)
+UUIDHypenated: @fake(:uuid_hyphenated)
+UUID: @fake(:uuid_digit)
+```
+
 
 ### Docker
 
