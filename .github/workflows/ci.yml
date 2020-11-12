@@ -15,7 +15,11 @@ jobs:
         uses: actions/setup-go@v1
         with:
           go-version: ${{ matrix.go }}
-        run: make install_revive
+
+    - name: Get dependencies
+      run: |
+        make install_revive
+
       - name: Run make ci
         run: |
           make ci
