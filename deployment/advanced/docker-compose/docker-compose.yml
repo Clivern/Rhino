@@ -1,4 +1,5 @@
 version: '3'
+
 services:
     rhino:
         image: 'clivern/rhino:release-1.5.0'
@@ -8,6 +9,22 @@ services:
         volumes:
             - './configs/:/app/configs'
         restart: unless-stopped
+
+    loki:
+        image: grafana/loki:2.0.0
+        ports:
+            - "3100:3100"
+        command: -config.file=/etc/loki/local-config.yaml
+        networks:
+            - loki
+
+    promtail:
+        image: grafana/promtail:2.0.0
+        volumes:
+            - './configs/:/var/log'
+        command: -config.file=/etc/promtail/config.yml
+        networks:
+            - loki
 
     prometheus:
         image: 'prom/prometheus:v2.22.1'
@@ -29,3 +46,9 @@ services:
         depends_on:
             - prometheus
         restart: unless-stopped
+        networks:
+          - loki
+
+
+networks:
+  loki:

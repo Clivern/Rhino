@@ -167,8 +167,14 @@ UUID: @fake(:uuid_digit)
 Clone and then run docker containers.
 
 ```zsh
+# Simple setup
 $ git clone https://github.com/Clivern/Rhino.git
-$ cd Rhino/deployment/docker-compose
+$ cd Rhino/deployment/basic/docker-compose
+$ docker-compose up -d
+
+# In case you want to visualize incoming requests with grafana
+$ git clone https://github.com/Clivern/Rhino.git
+$ cd Rhino/deployment/advanced/docker-compose
 $ docker-compose up -d
 ```
 
