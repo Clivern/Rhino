@@ -6,6 +6,7 @@ package module
 
 import (
 	"fmt"
+	"math/rand"
 	"regexp"
 	"strings"
 
@@ -68,8 +69,13 @@ func (f *Faker) Transform(data string) (string, error) {
 	}
 
 	for i := 0; i < len(types); i++ {
+		if strings.HasPrefix(types[i], "@fake(:anyof[") {
+			item := strings.TrimPrefix(types[i], "@fake(:anyof[")
+			item = strings.TrimSuffix(item, "])")
+			items := strings.Split(item, "||")
 
-		if types[i] == "@fake(:lat)" {
+			data = strings.Replace(data, types[i], items[rand.Intn(len(items))], -1)
+		} else if types[i] == "@fake(:lat)" {
 			data = strings.Replace(data, types[i], fmt.Sprintf("%f", f.Latitude), -1)
 		} else if types[i] == "@fake(:long)" {
 			data = strings.Replace(data, types[i], fmt.Sprintf("%f", f.Longitude), -1)
