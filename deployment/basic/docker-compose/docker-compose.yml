@@ -2,7 +2,7 @@ version: '3'
 
 services:
     rhino:
-        image: 'clivern/rhino:release-1.5.1'
+        image: 'clivern/rhino:release-1.6.1'
         ports:
             - "8080:8080"
         command: '/app/rhino serve -c /app/configs/config.prod.json'
