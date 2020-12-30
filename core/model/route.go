@@ -66,7 +66,7 @@ func GetRoute(path string, method string, parameters map[string]string) Route {
 			continue
 		}
 
-		// Match parametes
+		// Match parameters
 		if len(route.Request.Parameters) != 0 {
 			status := true
 
@@ -95,8 +95,8 @@ func GetRoute(path string, method string, parameters map[string]string) Route {
 			continue
 		}
 
-		// Match parametes
-		if len(route.Request.Parameters) != 0 {
+		// Match parameters
+		if len(route.Request.Parameters) == len(parameters) {
 			status := true
 
 			for key, value := range route.Request.Parameters {
@@ -112,6 +112,8 @@ func GetRoute(path string, method string, parameters map[string]string) Route {
 			if !status {
 				continue
 			}
+		} else {
+			continue
 		}
 
 		return route

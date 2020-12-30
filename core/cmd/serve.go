@@ -19,6 +19,7 @@ import (
 	"github.com/clivern/rhino/core/middleware"
 	"github.com/clivern/rhino/core/model"
 	"github.com/clivern/rhino/core/module"
+	"github.com/clivern/rhino/core/util"
 
 	"github.com/drone/envsubst"
 	"github.com/gin-gonic/gin"
@@ -160,7 +161,19 @@ var serveCmd = &cobra.Command{
 			))
 		}
 
+		routes := []string{}
+
 		for _, route := range mockRoutes {
+			uri := fmt.Sprintf(
+				"%s:%s",
+				strings.ToLower(route.Request.Method),
+				route.Path,
+			)
+
+			if util.InArray(uri, routes) {
+				continue
+			}
+
 			if strings.ToLower(route.Request.Method) == "get" {
 				r.GET(route.Path, controller.Mock)
 			} else if strings.ToLower(route.Request.Method) == "post" {
@@ -176,6 +189,8 @@ var serveCmd = &cobra.Command{
 			} else if strings.ToLower(route.Request.Method) == "options" {
 				r.OPTIONS(route.Path, controller.Mock)
 			}
+
+			routes = append(routes, uri)
 		}
 
 		var runerr error
