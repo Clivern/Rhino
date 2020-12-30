@@ -66,6 +66,66 @@
                 "latency": "0s",
                 "failRate": "0%"
             }
+        },
+        {
+            "path": "/api/singleEndpoint",
+            "request": {
+                "method": "get",
+                "parameters": {
+                    "action": "actionA"
+                }
+            },
+            "response": {
+                "statusCode": 200,
+                "headers": [
+                    {"key": "Content-Type", "value": "application/json"}
+                ],
+                "body": "{\"action\": \"actionA\"}"
+            },
+            "chaos": {
+                "latency": "0s",
+                "failRate": "0%"
+            }
+        },
+        {
+            "path": "/api/singleEndpoint",
+            "request": {
+                "method": "get",
+                "parameters": {
+                    "action": "actionB"
+                }
+            },
+            "response": {
+                "statusCode": 200,
+                "headers": [
+                    {"key": "Content-Type", "value": "application/json"}
+                ],
+                "body": "{\"action\": \"actionB\"}"
+            },
+            "chaos": {
+                "latency": "0s",
+                "failRate": "0%"
+            }
+        },
+        {
+            "path": "/api/singleEndpoint",
+            "request": {
+                "method": "get",
+                "parameters": {
+                    "action": ":action"
+                }
+            },
+            "response": {
+                "statusCode": 200,
+                "headers": [
+                    {"key": "Content-Type", "value": "application/json"}
+                ],
+                "body": "{\"action\": \":action\"}"
+            },
+            "chaos": {
+                "latency": "0s",
+                "failRate": "0%"
+            }
         }
     ],
     "debug": [
