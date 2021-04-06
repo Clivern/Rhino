@@ -19,7 +19,7 @@ services:
             - loki
 
     promtail:
-        image: grafana/promtail:2.2.0
+        image: grafana/promtail:2.2.1
         volumes:
             - './configs/:/var/log'
         command: -config.file=/etc/promtail/config.yml
