@@ -11,7 +11,7 @@ services:
         restart: unless-stopped
 
     loki:
-        image: grafana/loki:2.1.0
+        image: grafana/loki:2.2.1
         ports:
             - "3100:3100"
         command: -config.file=/etc/loki/local-config.yaml
@@ -19,7 +19,7 @@ services:
             - loki
 
     promtail:
-        image: grafana/promtail:2.1.0
+        image: grafana/promtail:2.3.0
         volumes:
             - './configs/:/var/log'
         command: -config.file=/etc/promtail/config.yml
@@ -27,7 +27,7 @@ services:
             - loki
 
     prometheus:
-        image: 'prom/prometheus:v2.24.1'
+        image: 'prom/prometheus:v2.30.3'
         volumes:
             - './prometheus/:/etc/prometheus'
         command: '--config.file=/etc/prometheus/prometheus.yml'
@@ -36,7 +36,7 @@ services:
         restart: unless-stopped
 
     grafana:
-        image: 'grafana/grafana:6.7.5'
+        image: 'grafana/grafana:8.2.0'
         environment:
             - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
             - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
