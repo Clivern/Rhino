@@ -1,6 +1,6 @@
 module github.com/clivern/rhino
 
-go 1.16
+go 1.19
 
 require (
 	github.com/bxcodec/faker/v3 v3.8.0
