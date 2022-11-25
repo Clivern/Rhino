@@ -27,7 +27,7 @@ services:
             - loki
 
     prometheus:
-        image: 'prom/prometheus:v2.40.2'
+        image: 'prom/prometheus:v2.40.3'
         volumes:
             - './prometheus/:/etc/prometheus'
         command: '--config.file=/etc/prometheus/prometheus.yml'
