@@ -1,4 +1,4 @@
-FROM golang:1.19.3
+FROM golang:1.20.4
 
 ARG RHINO_VERSION=1.6.2
 
